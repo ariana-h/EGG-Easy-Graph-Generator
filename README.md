@@ -1,6 +1,6 @@
 # EGG: Easy Graph Generator
 
-Contributors: Ariana Huhko, Katelyn Elliot, and Taylor Hunter  
+Contributors: Ariana Huhko, Katelyn Elliott, and Taylor Hunter  
 SUNY Polytechnic Institute   
 CS 512: Software Engineering
 

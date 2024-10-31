@@ -104,6 +104,11 @@ def main():
     # Set the window to be resizable
     root.rowconfigure(0, weight=1)
     root.columnconfigure(0, weight=1)
+    
+    # Load and set logo icon on the title bar
+    original_logo = Image.open('EGG.png')
+    icon_image = ImageTk.PhotoImage(original_logo.resize((32, 32)))  # Resize for title bar
+    root.iconphoto(True, icon_image)  # Set title bar icon
 
     # Create a frame for the controls on the left
     control_frame = tk.Frame(root, bg="#d0f0c0")

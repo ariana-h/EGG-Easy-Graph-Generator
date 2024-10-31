@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import ttk, messagebox
+from tkinter import ttk, messagebox, filedialog
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
 import numpy as np
@@ -43,7 +43,7 @@ def plot_graph():
             for i, val in enumerate(y_scaled):
                 ax.text(i, 0.5, symbols[i] * val, fontsize=15)
             ax.set_xlim(0, 10)
-            ax.set_ylim(0, 1)
+            ax.set_ylim(0, 10)
         elif graph_type == "Histogram":
             ax.hist(y, bins=30, color="green")
         elif graph_type == "Area Graph":
@@ -62,13 +62,15 @@ def clear_graph():
     canvas.draw()
     equation_input.delete(0, tk.END)
 
-# Function to save the graph
+# Function to save the graph with user defined name
 def save_graph():
-    try:
-        fig.savefig("graph.png")
-        messagebox.showinfo("Success", "Graph saved as 'graph.png'")
-    except Exception as e:
-        messagebox.showerror("Error", f"Failed to save graph: {e}")
+    file_path = filedialog.asksaveasfilename(defaultextension=".png", filetypes=[("PNG files", "*.png"), ("All files", "*.*")])
+    if file_path:
+        try:
+            fig.savefig(file_path)
+            messagebox.showinfo("Success", f"Graph saved as '{file_path}'")
+        except Exception as e:
+            messagebox.showerror("Error", f"Failed to save graph: {e}")
 
 # Function to resize logo based on window size
 def resize_logo(event):
@@ -150,14 +152,17 @@ def main():
     plot_button = tk.Button(control_frame, text="Add Point", command=plot_graph, bg="#006400", fg="white")
     plot_button.pack(pady=5, fill=tk.X)
 
+    generate_button = tk.Button(control_frame, text="Generate Graph", command=plot_graph, bg="#006400", fg="white")
+    generate_button.pack(pady=5, fill=tk.X)
+
     remove_button = tk.Button(control_frame, text="Remove Point", command=clear_graph, bg="#006400", fg="white")
     remove_button.pack(pady=5, fill=tk.X)
 
     import_button = tk.Button(control_frame, text="Import Data", command=lambda: messagebox.showinfo("Import", "Import Data clicked"), bg="#006400", fg="white")
     import_button.pack(pady=5, fill=tk.X)
 
-    generate_button = tk.Button(control_frame, text="Generate Graph", command=plot_graph, bg="#006400", fg="white")
-    generate_button.pack(pady=5, fill=tk.X)
+    save_button = tk.Button(control_frame, text="Save Graph", command=save_graph, bg="#006400", fg="white")
+    save_button.pack(pady=5, fill=tk.X)
 
     # Configure root window to be resizable
     root.columnconfigure(1, weight=1)

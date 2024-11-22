@@ -5,7 +5,7 @@ from matplotlib.figure import Figure
 import numpy as np
 import pandas as pd
 import sympy as sp
-from sympy import sympify, symbols
+from sympy import sympify, symbols, pi
 from PIL import Image, ImageTk
 import csv
 
@@ -18,7 +18,11 @@ x = symbols('x')  # Define 'x' as a symbol for sympy to recognize it in equation
 
 def parse_equation(equation_str):
     try:
-        equation_str = equation_str.replace('^', '**').replace(' ', '')  # Preprocess the equation
+        # Replace '^' with '**' for exponentiation, and handle whitespace
+        equation_str = equation_str.replace('^', '**').replace(' ', '')  
+        
+        equation_str = equation_str.replace('pi', str(pi))
+        
         processed_str = ''
         for i, char in enumerate(equation_str):
             if i > 0 and char.isalpha() and equation_str[i-1].isdigit():
@@ -29,10 +33,10 @@ def parse_equation(equation_str):
                 processed_str += char
 
         expression = sympify(processed_str)
-        return lambda val: float(expression.subs(x, val))
+        return lambda val: float(expression.subs(x, val))  # Return lambda for evaluation
     except Exception as e:
         messagebox.showerror("Error", f"Invalid equation format: {e}")
-        return None
+    return None
 
 #####################################################################
 # Function to update the graph based on user input and selected graph type
@@ -136,28 +140,39 @@ def plot_graph():
 # Function to clear the graph
 def clear_graph():
     ax.clear()
+    
+    # Set background color and grid styling again after clearing the plot
+    ax.set_facecolor('#f5fff2')
+    ax.grid(True, which='both', color='gray', linestyle='--', linewidth=0.5)
+    ax.minorticks_on()
+    ax.grid(which='minor', color='lightgray', linestyle=':', linewidth=0.5)
+    ax.axhline(0, color='black', linewidth=1.5)
+    ax.axvline(0, color='black', linewidth=1.5)
+
+    # Redraw the canvas
     canvas.draw()
+    
+    # Clear input fields
     equation_input.delete(0, tk.END)
     bar_input.delete("1.0", tk.END)
     pie_input.delete("1.0", tk.END)
     pictograph_input.delete("1.0", tk.END)
-    ##
     scatter_input.delete("1.0", tk.END)
     hist_input.delete("1.0", tk.END)
     area_input.delete("1.0", tk.END)
-    
+       
 #####################################################################
 # Function to save the graph with user defined name
 #####################################################################
 
 def save_graph():
-    file_path = filedialog.asksaveasfilename(defaultextension=".png", filetypes=[("PNG files", "*.png"), ("All files", "*.*")])
-    if file_path: 
-        try:
-            fig.savefig(file_path)
-            messagebox.showinfo("Success", f"Graph saved as '{file_path}'")
-        except Exception as e:
-            messagebox.showerror("Error", f"Failed to save graph: {e}")
+        file_path = filedialog.asksaveasfilename(defaultextension=".png", filetypes=[("PNG files", "*.png"), ("All files", "*.*")])
+        if file_path: 
+            try:
+                fig.savefig(file_path)
+                messagebox.showinfo("Success", f"Graph saved as '{file_path}'")
+            except Exception as e:
+                messagebox.showerror("Error", f"Failed to save graph: {e}")
 
 #####################################################################
 # Function to plot data from file
@@ -501,6 +516,9 @@ def main():
 
     import_button = tk.Button(control_frame, text="Import Data", command=import_data, bg="#006400", fg="white")
     import_button.pack(pady=5, fill=tk.X)
+    
+    clear_button = tk.Button(control_frame, text="Clear Graph", command=clear_graph, bg="#006400", fg="white")
+    clear_button.pack(pady=5, fill=tk.X)
 
     # Initialize data
     imported_data = None

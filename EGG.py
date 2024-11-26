@@ -124,7 +124,7 @@ def update_input_fields(event):
         area_input.bind("<FocusOut>", lambda event=None: on_focusout(area_input, placeholder))
         area_input.pack(pady=5)
     elif graph_type == "Scatter Plot":
-        placeholder = "Enter X-values and Y-values on separate lines (e.g., X: 1,2,3 Y: 4,5,6)"
+        placeholder = "Enter X and Y coordinate values on separate lines (e.g., X, Y)"
         initial(scatter_input, placeholder)
         scatter_input.bind("<FocusIn>", lambda event=None: on_entry_click(scatter_input, placeholder))
         scatter_input.bind("<FocusOut>", lambda event=None: on_focusout(scatter_input, placeholder))
@@ -418,7 +418,7 @@ def main():
             elif graph_type == "Scatter Plot":
                 scatter_data = scatter_input.get("1.0", tk.END).strip().splitlines()
                 if len(scatter_data) < 2:
-                    messagebox.showerror("Error", "Scatter Plot requires two lines: one for X values and one for Y values.")
+                    messagebox.showerror("Error", "Scatter Plot requires at least two coordinate pairs on separate lines.")
                     return
                 x_values = [float(val) for val in scatter_data[0].split(',') if val]
                 y_values = [float(val) for val in scatter_data[1].split(',') if val]

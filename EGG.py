@@ -106,7 +106,7 @@ def update_input_fields(event):
         pie_input.bind("<FocusOut>", lambda event=None: on_focusout(pie_input, placeholder))
         pie_input.pack(pady=5)
     elif graph_type == "Pictograph":
-        placeholder = "Enter data in 'Category, Count' format (e.g., Cat A, 3)"
+        placeholder = "Enter data in 'Emoji Name, Count' format (e.g., Cat, 3)"
         initial(pictograph_input, placeholder)
         pictograph_input.bind("<FocusIn>", lambda event=None: on_entry_click(pictograph_input, placeholder))
         pictograph_input.bind("<FocusOut>", lambda event=None: on_focusout(pictograph_input, placeholder))

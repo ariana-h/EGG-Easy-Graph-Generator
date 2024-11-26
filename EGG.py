@@ -38,243 +38,15 @@ def parse_equation(equation_str):
         messagebox.showerror("Error", f"Invalid equation format: {e}")
     return None
 
-#####################################################################
-# Function to update the graph based on user input and selected graph type
-#####################################################################
+# placeholder for plot_data
 
-def plot_graph():
-    graph_type = graph_type_combo.get()
+# placeholder for clear_graph
 
-    # Clear the plot
-    ax.clear()
-    
-    # Set background color and grid styling
-    ax.set_facecolor('#e0f7da')
-    ax.grid(True, which='both', color='gray', linestyle='--', linewidth=0.5)
-    ax.minorticks_on()
-    ax.grid(which='minor', color='lightgray', linestyle=':', linewidth=0.5)
-    ax.axhline(0, color='black', linewidth=1.5)
-    ax.axvline(0, color='black', linewidth=1.5)
+# placeholder for save_graph
 
-    try:
-        if graph_type == "Line Plot":
-            equation_str = equation_input.get()
-            equation_func = parse_equation(equation_str)
-            if not equation_func:
-                return  # If the equation is invalid, exit without plotting
+# placeholder to import from file ()
 
-            x_vals = np.linspace(-10, 10, 400)
-            y_vals = [equation_func(val) for val in x_vals]
-
-            ax.plot(x_vals, y_vals, label=equation_str, color="green")
-            ax.legend()
-        
-        elif graph_type == "Bar Graph":
-            data_pairs = bar_input.get("1.0", tk.END).strip().splitlines()
-            categories, values = [], []
-            for pair in data_pairs:
-                try:
-                    category, value = pair.split(',')
-                    categories.append(category.strip())
-                    values.append(float(value.strip()))
-                except ValueError:
-                    messagebox.showerror("Error", "Invalid format for Bar Graph. Use 'Category, Value' format.")
-                    return
-            ax.bar(categories, values, color="green")
-        
-        elif graph_type == "Pie Chart":
-            data_pairs = pie_input.get("1.0", tk.END).strip().splitlines()
-            values, labels = [], []
-            for pair in data_pairs:
-                try:
-                    label, value = pair.split(',')
-                    labels.append(label.strip())
-                    values.append(float(value.strip()))
-                except ValueError:
-                    messagebox.showerror("Error", "Invalid format for Pie Chart. Use 'Label, Value' format.")
-                    return
-            ax.pie(values, labels=labels, autopct='%1.1f%%')
-        
-        elif graph_type == "Pictograph":
-            data_pairs = pictograph_input.get("1.0", tk.END).strip().splitlines()
-            categories = []
-            for pair in data_pairs:
-                try:
-                    category, count = pair.split(',')
-                    categories.extend([category.strip()] * int(count.strip()))  # Repeat category based on count
-                except ValueError:
-                    messagebox.showerror("Error", "Invalid format for Pictograph. Use 'Category, Count' format.")
-                    return
-            ax.text(0.5, 0.5, ', '.join(categories), fontsize=15, ha='center')
-            ax.set_xlim(0, 1)
-            ax.set_ylim(0, 1)
-            ax.axis('off')
-        
-        elif graph_type == "Histogram":
-            data_values = hist_input.get("1.0", tk.END).strip().split(',')
-            data_values = [float(val) for val in data_values if val]  # Convert input to float
-            ax.hist(data_values, bins=10, color="green")  # Default 10 bins
-        
-        elif graph_type == "Area Graph":
-            area_values = area_input.get("1.0", tk.END).strip().split(',')
-            area_values = [float(val) for val in area_values if val]  # Convert input to float
-            x_vals = np.linspace(0, len(area_values) - 1, len(area_values))
-            ax.fill_between(x_vals, area_values, color="green", alpha=0.5)
-        
-        elif graph_type == "Scatter Plot":
-            scatter_data = scatter_input.get("1.0", tk.END).strip().splitlines()
-            if len(scatter_data) < 2:
-                messagebox.showerror("Error", "Scatter Plot requires two lines: one for X values and one for Y values.")
-                return
-            x_values = [float(val) for val in scatter_data[0].split(',') if val]
-            y_values = [float(val) for val in scatter_data[1].split(',') if val]
-            ax.scatter(x_values, y_values, color="green")
-        
-        # Update the canvas to reflect the changes
-        canvas.draw()
-
-    except Exception as e:
-        messagebox.showerror("Error", f"An error occurred while generating the graph: {e}")
-
-
-# Function to clear the graph
-def clear_graph():
-    ax.clear()
-    
-    # Set background color and grid styling again after clearing the plot
-    ax.set_facecolor('#f5fff2')
-    ax.grid(True, which='both', color='gray', linestyle='--', linewidth=0.5)
-    ax.minorticks_on()
-    ax.grid(which='minor', color='lightgray', linestyle=':', linewidth=0.5)
-    ax.axhline(0, color='black', linewidth=1.5)
-    ax.axvline(0, color='black', linewidth=1.5)
-
-    # Redraw the canvas
-    canvas.draw()
-    
-    # Clear input fields
-    equation_input.delete(0, tk.END)
-    bar_input.delete("1.0", tk.END)
-    pie_input.delete("1.0", tk.END)
-    pictograph_input.delete("1.0", tk.END)
-    scatter_input.delete("1.0", tk.END)
-    hist_input.delete("1.0", tk.END)
-    area_input.delete("1.0", tk.END)
-       
-#####################################################################
-# Function to save the graph with user defined name
-#####################################################################
-
-def save_graph():
-        file_path = filedialog.asksaveasfilename(defaultextension=".png", filetypes=[("PNG files", "*.png"), ("All files", "*.*")])
-        if file_path: 
-            try:
-                fig.savefig(file_path)
-                messagebox.showinfo("Success", f"Graph saved as '{file_path}'")
-            except Exception as e:
-                messagebox.showerror("Error", f"Failed to save graph: {e}")
-
-#####################################################################
-# Function to plot data from file
-#####################################################################
-
-def plot_data(x_data, y_data):
-    # Clear canvas
-    ax.clear()
-    # Plot the data if it contains any points
-    if x_data and y_data:
-        ax.plot(x_data, y_data, marker='o', linestyle='-', color="green")
-        
-        # Set axis limits dynamically based on data range with buffer
-        ax.set_xlim([min(min(x_data), 0), max(max(x_data), 10)])
-        ax.set_ylim([min(min(y_data), 0), max(max(y_data), 10)])
-        
-        # Set background color of the graph to a faded green
-        ax.set_facecolor('#e0f7da')
-        # Add a grid with major and minor lines to resemble graph paper
-        ax.grid(True, which='both', color='gray', linestyle='--', linewidth=0.5)
-        # Set minor ticks
-        ax.minorticks_on()
-        # Customize minor grid lines (finer)
-        ax.grid(which='minor', color='lightgray', linestyle=':', linewidth=0.5)
-        # Draw darker x and y axis lines
-        ax.axhline(0, color='black', linewidth=1.5)  # Darker x-axis
-        ax.axvline(0, color='black', linewidth=1.5)  # Darker y-axis
-
-        # Draw canvas
-        canvas.draw()
-
-    else:
-        messagebox.showerror("Error", "No valid data to plot.")
-
-#####################################################################
-# Function to import data from CSV or Excel
-#####################################################################
-
-def import_data(): 
-    file_path = filedialog.askopenfilename(filetypes=[("CSV Files", "*.csv"), ("Excel Files", "*.xlsx")])
-    if file_path:
-        try:
-            global imported_data
-
-            # Variables for x and y values from file
-            x_data = []
-            y_data = []
-
-            # Check file type and parse
-            if file_path.endswith('.csv'):
-                with open(file_path, newline='') as csvfile:
-                    reader = csv.reader(csvfile, quotechar='"')
-                    for row in reader:
-                        # Check if the row contains an equation
-                        if len(row) == 1 and row[0].startswith("(") and row[0].endswith(")"):
-                            equation = sympify(row[0].strip("()"))  # Parse equation
-                            x_data = list(range(0, 11))  # Default x range
-                            y_data = [float(equation.subs(x, val)) for val in x_data]  # Evaluate y
-                            plot_data(x_data, y_data)
-                            return
-                        elif len(row) == 1 and ',' in row[0]:  # Check for "x,y" format
-                            x_val, y_val = map(float, row[0].split(","))
-                            x_data.append(x_val)
-                            y_data.append(y_val)
-                        elif len(row) == 2:  # Two-column CSV
-                            x_data.append(float(row[0]))
-                            y_data.append(float(row[1]))
-                        else:
-                            messagebox.showerror("Error", "Data is not in expected 'x,y' or equation format.")
-                            return
-
-                # If data points are detected, plot them
-                if x_data and y_data:
-                    plot_data(x_data, y_data)
-
-            elif file_path.endswith('.xlsx'):
-                # Use pandas to handle Excel files
-                data = pd.read_excel(file_path, header=None, engine='openpyxl')
-                if len(data.columns) == 1:  # Single-column file (possible equations)
-                    equations = data.iloc[:, 0].tolist()
-                    for eq in equations:
-                        if isinstance(eq, str) and eq.startswith("(") and eq.endswith(")"):
-                            equation = sympify(eq.strip("()"))
-                            x_data = list(range(0, 11))  # Default x range
-                            y_data = [float(equation.subs(x, val)) for val in x_data]
-                            plot_data(x_data, y_data)
-                            return
-                    messagebox.showerror("Error", "No valid equations detected in the file.")
-                elif len(data.columns) == 2:  # Two-column file (x and y values)
-                    x_data = data.iloc[:, 0].astype(float).tolist()
-                    y_data = data.iloc[:, 1].astype(float).tolist()
-                    plot_data(x_data, y_data)
-                else:
-                    messagebox.showerror("Error", "Data format in file is not recognized.")
-                    return
-
-            else:
-                messagebox.showerror("Error", "Unsupported file type.")
-                return
-               
-        except Exception as e:
-            messagebox.showerror("Error", f"Failed to import and plot data: '{e}'")
+# placeholder for import_file
 
 # Function to customize the graph
 # def customize_graph():
@@ -505,14 +277,252 @@ def main():
     # y_label_input = tk.Entry(control_frame, width=30)
     # y_label_input.insert(0, "Y-axis Label")
     # y_label_input.pack(pady=5)
+    
+    #####################################################################
+    # Function to update the graph based on user input and selected graph type
+    #####################################################################
 
+    def plot_graph():
+        graph_type = graph_type_combo.get()
 
+        # Clear the plot
+        ax.clear()
+        save_button.pack_forget()
+        
+        # Set background color and grid styling
+        ax.set_facecolor('#e0f7da')
+        ax.grid(True, which='both', color='gray', linestyle='--', linewidth=0.5)
+        ax.minorticks_on()
+        ax.grid(which='minor', color='lightgray', linestyle=':', linewidth=0.5)
+        ax.axhline(0, color='black', linewidth=1.5)
+        ax.axvline(0, color='black', linewidth=1.5)
+
+        try:
+            if graph_type == "Line Plot":
+                equation_str = equation_input.get()
+                equation_func = parse_equation(equation_str)
+                if not equation_func:
+                    return  # If the equation is invalid, exit without plotting
+
+                x_vals = np.linspace(-10, 10, 400)
+                y_vals = [equation_func(val) for val in x_vals]
+
+                ax.plot(x_vals, y_vals, label=equation_str, color="green")
+                ax.legend()
+            
+            elif graph_type == "Bar Graph":
+                data_pairs = bar_input.get("1.0", tk.END).strip().splitlines()
+                categories, values = [], []
+                for pair in data_pairs:
+                    try:
+                        category, value = pair.split(',')
+                        categories.append(category.strip())
+                        values.append(float(value.strip()))
+                    except ValueError:
+                        messagebox.showerror("Error", "Invalid format for Bar Graph. Use 'Category, Value' format.")
+                        return
+                ax.bar(categories, values, color="green")
+            
+            elif graph_type == "Pie Chart":
+                data_pairs = pie_input.get("1.0", tk.END).strip().splitlines()
+                values, labels = [], []
+                for pair in data_pairs:
+                    try:
+                        label, value = pair.split(',')
+                        labels.append(label.strip())
+                        values.append(float(value.strip()))
+                    except ValueError:
+                        messagebox.showerror("Error", "Invalid format for Pie Chart. Use 'Label, Value' format.")
+                        return
+                ax.pie(values, labels=labels, autopct='%1.1f%%')
+            
+            elif graph_type == "Pictograph":
+                data_pairs = pictograph_input.get("1.0", tk.END).strip().splitlines()
+                categories = []
+                for pair in data_pairs:
+                    try:
+                        category, count = pair.split(',')
+                        categories.extend([category.strip()] * int(count.strip()))  # Repeat category based on count
+                    except ValueError:
+                        messagebox.showerror("Error", "Invalid format for Pictograph. Use 'Category, Count' format.")
+                        return
+                ax.text(0.5, 0.5, ', '.join(categories), fontsize=15, ha='center')
+                ax.set_xlim(0, 1)
+                ax.set_ylim(0, 1)
+                ax.axis('off')
+            
+            elif graph_type == "Histogram":
+                data_values = hist_input.get("1.0", tk.END).strip().split(',')
+                data_values = [float(val) for val in data_values if val]  # Convert input to float
+                ax.hist(data_values, bins=10, color="green")  # Default 10 bins
+            
+            elif graph_type == "Area Graph":
+                area_values = area_input.get("1.0", tk.END).strip().split(',')
+                area_values = [float(val) for val in area_values if val]  # Convert input to float
+                x_vals = np.linspace(0, len(area_values) - 1, len(area_values))
+                ax.fill_between(x_vals, area_values, color="green", alpha=0.5)
+            
+            elif graph_type == "Scatter Plot":
+                scatter_data = scatter_input.get("1.0", tk.END).strip().splitlines()
+                if len(scatter_data) < 2:
+                    messagebox.showerror("Error", "Scatter Plot requires two lines: one for X values and one for Y values.")
+                    return
+                x_values = [float(val) for val in scatter_data[0].split(',') if val]
+                y_values = [float(val) for val in scatter_data[1].split(',') if val]
+                ax.scatter(x_values, y_values, color="green")
+            
+            # Update the canvas to reflect the changes
+            canvas.draw()
+            save_button.pack()
+
+        except Exception as e:
+            messagebox.showerror("Error", f"An error occurred while generating the graph: {e}")
+        
+
+    # Function to clear the graph
+    def clear_graph():
+        ax.clear()
+        
+        # Set background color and grid styling again after clearing the plot
+        ax.set_facecolor('#f5fff2')
+        ax.grid(True, which='both', color='gray', linestyle='--', linewidth=0.5)
+        ax.minorticks_on()
+        ax.grid(which='minor', color='lightgray', linestyle=':', linewidth=0.5)
+        ax.axhline(0, color='black', linewidth=1.5)
+        ax.axvline(0, color='black', linewidth=1.5)
+
+        # Redraw the canvas
+        canvas.draw()
+        save_button.pack_forget()
+
+        # Clear input fields
+        equation_input.delete(0, tk.END)
+        bar_input.delete("1.0", tk.END)
+        pie_input.delete("1.0", tk.END)
+        pictograph_input.delete("1.0", tk.END)
+        scatter_input.delete("1.0", tk.END)
+        hist_input.delete("1.0", tk.END)
+        area_input.delete("1.0", tk.END)
+
+    def import_data(): 
+        file_path = filedialog.askopenfilename(filetypes=[("CSV Files", "*.csv"), ("Excel Files", "*.xlsx")])
+        if file_path:
+            try:
+                global imported_data
+
+                # Variables for x and y values from file
+                x_data = []
+                y_data = []
+
+                # Check file type and parse
+                if file_path.endswith('.csv'):
+                    with open(file_path, newline='') as csvfile:
+                        reader = csv.reader(csvfile, quotechar='"')
+                        for row in reader:
+                            # Check if the row contains an equation
+                            if len(row) == 1 and row[0].startswith("(") and row[0].endswith(")"):
+                                equation = sympify(row[0].strip("()"))  # Parse equation
+                                x_data = list(range(0, 11))  # Default x range
+                                y_data = [float(equation.subs(x, val)) for val in x_data]  # Evaluate y
+                                plot_data(x_data, y_data)
+                                return
+                            elif len(row) == 1 and ',' in row[0]:  # Check for "x,y" format
+                                x_val, y_val = map(float, row[0].split(","))
+                                x_data.append(x_val)
+                                y_data.append(y_val)
+                            elif len(row) == 2:  # Two-column CSV
+                                x_data.append(float(row[0]))
+                                y_data.append(float(row[1]))
+                            else:
+                                messagebox.showerror("Error", "Data is not in expected 'x,y' or equation format.")
+                                return
+
+                    # If data points are detected, plot them
+                    if x_data and y_data:
+                        plot_data(x_data, y_data)
+
+                elif file_path.endswith('.xlsx'):
+                    # Use pandas to handle Excel files
+                    data = pd.read_excel(file_path, header=None, engine='openpyxl')
+                    if len(data.columns) == 1:  # Single-column file (possible equations)
+                        equations = data.iloc[:, 0].tolist()
+                        for eq in equations:
+                            if isinstance(eq, str) and eq.startswith("(") and eq.endswith(")"):
+                                equation = sympify(eq.strip("()"))
+                                x_data = list(range(0, 11))  # Default x range
+                                y_data = [float(equation.subs(x, val)) for val in x_data]
+                                plot_data(x_data, y_data)
+                                return
+                        messagebox.showerror("Error", "No valid equations detected in the file.")
+                    elif len(data.columns) == 2:  # Two-column file (x and y values)
+                        x_data = data.iloc[:, 0].astype(float).tolist()
+                        y_data = data.iloc[:, 1].astype(float).tolist()
+                        plot_data(x_data, y_data)
+                    else:
+                        messagebox.showerror("Error", "Data format in file is not recognized.")
+                        return
+
+                else:
+                    messagebox.showerror("Error", "Unsupported file type.")
+                    return
+                
+            except Exception as e:
+                messagebox.showerror("Error", f"Failed to import and plot data: '{e}'")
+
+    #####################################################################
+    # Function to plot data from file
+    #####################################################################
+
+    def plot_data(x_data, y_data):
+        # Clear canvas
+        ax.clear()
+        save_button.pack_forget()
+        # Plot the data if it contains any points
+        if x_data and y_data:
+            ax.plot(x_data, y_data, marker='o', linestyle='-', color="green")
+            
+            # Set axis limits dynamically based on data range with buffer
+            ax.set_xlim([min(min(x_data), 0), max(max(x_data), 10)])
+            ax.set_ylim([min(min(y_data), 0), max(max(y_data), 10)])
+            
+            # Set background color of the graph to a faded green
+            ax.set_facecolor('#e0f7da')
+            # Add a grid with major and minor lines to resemble graph paper
+            ax.grid(True, which='both', color='gray', linestyle='--', linewidth=0.5)
+            # Set minor ticks
+            ax.minorticks_on()
+            # Customize minor grid lines (finer)
+            ax.grid(which='minor', color='lightgray', linestyle=':', linewidth=0.5)
+            # Draw darker x and y axis lines
+            ax.axhline(0, color='black', linewidth=1.5)  # Darker x-axis
+            ax.axvline(0, color='black', linewidth=1.5)  # Darker y-axis
+
+            # Draw canvas
+            canvas.draw()
+            save_button.pack()
+
+        else:
+            messagebox.showerror("Error", "No valid data to plot.")
+
+    #####################################################################
+    # Function to save the graph with user defined name
+    #####################################################################
+    def save_graph():
+            file_path = filedialog.asksaveasfilename(defaultextension=".png", filetypes=[("PNG files", "*.png"), ("All files", "*.*")])
+            
+            if file_path: 
+                try:
+                    fig.savefig(file_path)
+                    messagebox.showinfo("Success", f"Graph saved as '{file_path}'")
+                except Exception as e:
+                    messagebox.showerror("Error", f"Failed to save graph: {e}")
+    
     # Control buttons
     plot_button = tk.Button(control_frame, text="Generate Graph", command=plot_graph, bg="#006400", fg="white")
     plot_button.pack(pady=5, fill=tk.X)
 
     save_button = tk.Button(control_frame, text="Save Graph", command=save_graph, bg="#006400", fg="white")
-    save_button.pack(pady=5, fill=tk.X)
+    #save_button.pack(pady=5, fill=tk.X)
 
     import_button = tk.Button(control_frame, text="Import Data", command=import_data, bg="#006400", fg="white")
     import_button.pack(pady=5, fill=tk.X)

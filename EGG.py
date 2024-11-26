@@ -358,7 +358,7 @@ def main():
                 # Handle parsing errors
                     messagebox.showerror("Error", "Invalid format for Pictograph. Use 'Category, Count' format.")
                     return
-
+                # This is the emoji map more emojis can easily be added to this list
                 emoji_mapping = {
                     "dog": "🐶", "cat": "🐱", "bird": "🐦", "fish": "🐟", "rabbit": "🐰", "mouse": "🐭", "turtle": "🐢", "frog": "🐸",
                     "horse": "🐴", "cow": "🐮", "sheep": "🐑", "monkey": "🐵", "chicken": "🐔", "pig": "🐷", "lion": "🦁", "tiger": "🐯",
@@ -417,13 +417,30 @@ def main():
             
             elif graph_type == "Scatter Plot":
                 scatter_data = scatter_input.get("1.0", tk.END).strip().splitlines()
-                if len(scatter_data) < 2:
-                    messagebox.showerror("Error", "Scatter Plot requires at least two coordinate pairs on separate lines.")
+    
+                # Ensure there's at least one coordinate pair
+                if len(scatter_data) < 1:
+                    messagebox.showerror("Error", "Scatter Plot requires at least one coordinate pair (e.g., 'x,y').")
                     return
-                x_values = [float(val) for val in scatter_data[0].split(',') if val]
-                y_values = [float(val) for val in scatter_data[1].split(',') if val]
+
+                x_values = []
+                y_values = []
+
+                try:
+                    # Iterate through each line in the input (each line should be a coordinate pair)
+                    for pair in scatter_data:
+                        # Split each line into x and y values (e.g., "2,3" -> x=2, y=3)
+                        x, y = map(float, pair.split(','))  # Split each line into x and y values
+                        # Append the x and y values to the respective lists
+                        x_values.append(x)
+                        y_values.append(y)
+                except ValueError:
+                    messagebox.showerror("Error", "Invalid format for Scatter Plot. Use 'x,y' format on each line.")
+                    return
+
+                # Plot the scatter plot
                 ax.scatter(x_values, y_values, color="green")
-            
+
             # Update the canvas to reflect the changes
             canvas.draw()
             save_button.pack()

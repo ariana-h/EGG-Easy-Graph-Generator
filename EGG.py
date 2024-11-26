@@ -6,11 +6,16 @@ import numpy as np
 import pandas as pd
 import sympy as sp
 from sympy import sympify, symbols, pi
+from matplotlib import rcParams
 from PIL import Image, ImageTk
 import csv
 
 # Global variable for the symbol used in equations
 x = symbols('x')  # Define 'x' as a symbol for sympy to recognize it in equations
+
+# Set font family globally for emojis
+rcParams['font.family'] = 'Segoe UI Emoji' # Windows-compatible
+# For MacOS or Linux, replace 'Segoe UI Emoji' with 'Apple Color Emoji' or similar
 
 #####################################################################
 # Function to safely parse and evaluate equations using sympy
@@ -337,24 +342,72 @@ def main():
                 ax.pie(values, labels=labels, autopct='%1.1f%%')
             
             elif graph_type == "Pictograph":
+                # Get input data from the text box
                 data_pairs = pictograph_input.get("1.0", tk.END).strip().splitlines()
-                categories = []
-                for pair in data_pairs:
-                    try:
+
+                # Initialize variables for storing parsed data
+                data = []
+
+                try:
+                    # Parse the input into categories and counts
+                    for pair in data_pairs:
                         category, count = pair.split(',')
-                        categories.extend([category.strip()] * int(count.strip()))  # Repeat category based on count
-                    except ValueError:
-                        messagebox.showerror("Error", "Invalid format for Pictograph. Use 'Category, Count' format.")
-                        return
-                ax.text(0.5, 0.5, ', '.join(categories), fontsize=15, ha='center')
-                ax.set_xlim(0, 1)
-                ax.set_ylim(0, 1)
-                ax.axis('off')
+                        count = int(count.strip())
+                        data.append((category.strip(), count))  # Store as tuples
+                except ValueError:
+                # Handle parsing errors
+                    messagebox.showerror("Error", "Invalid format for Pictograph. Use 'Category, Count' format.")
+                    return
+
+                emoji_mapping = {
+                    "dog": "🐶", "cat": "🐱", "bird": "🐦", "fish": "🐟", "rabbit": "🐰", "mouse": "🐭", "turtle": "🐢", "frog": "🐸",
+                    "horse": "🐴", "cow": "🐮", "sheep": "🐑", "monkey": "🐵", "chicken": "🐔", "pig": "🐷", "lion": "🦁", "tiger": "🐯",
+                    "elephant": "🐘", "panda": "🐼", "bear": "🐻", "whale": "🐳", "dolphin": "🐬", "shark": "🦈", "octopus": "🐙", "bee": "🐝",
+                    "ladybug": "🐞", "snail": "🐌", "crab": "🦀", "butterfly": "🦋", "hedgehog": "🦔", "kangaroo": "🦘", "koala": "🐨",
+                    "camel": "🐫", "owl": "🦉", "bat": "🦇", "swan": "🦢", "flamingo": "🦩", "peacock": "🦚", "parrot": "🦜",
+                    "unicorn": "🦄", "dragon": "🐉", "gorilla": "🦍", "wolf": "🐺", "fox": "🦊", "zebra": "🦓", "hippopotamus": "🦛",
+                    "raccoon": "🦝", "penguin": "🐧", "duck": "🦆", "squid": "🦑", "lobster": "🦞", "seal": "🦭", "cheetah": "🐆",
+                    "t-rex": "🦖", "sauropod": "🦕", "smile": "😊", "grin": "😁", "wink": "😉", "laugh": "😆", "heart": "❤️",
+                    "heart_eyes": "😍", "kiss": "😘", "star": "⭐", "sparkles": "✨", "fire": "🔥", "thumbs_up": "👍", "clap": "👏",
+                    "party": "🎉", "confetti": "🎊", "balloon": "🎈", "flower": "🌸", "tree": "🌳", "sun": "☀️", "moon": "🌙",
+                    # Add more mappings as needed
+                    } 
+
+                # Plot emojis on the graph
+                x_positions = []  # X positions for categories
+                max_count = max(count for _, count in data)  # Find the maximum count to scale the graph
+
+                # Set up graph limits
+                ax.set_xlim(0, len(data))  # One x-unit per category
+                ax.set_ylim(0, max_count + 1)  # Allow some extra space on the y-axis
+
+                # Iterate through data to plot emojis
+                for i, (category, count) in enumerate(data):
+                    emoji = emoji_mapping.get(category.lower(), "❓")  # Default to "❓" if no emoji mapping
+                    x = i + 0.5  # Center emoji stack at category position
+                
+                    for j in range(count):
+                        y = j + 0.5  # Position emojis vertically stacked
+                        ax.text(x, y, emoji, fontsize=16, ha='center', va='center')  # Plot each emoji
+
+                    # Add a label for the category below the emojis
+                    ax.text(x,-0.6, category.capitalize(), fontsize=12, ha='center', va='center')  # Label below emojis
+
+                    # Format the graph
+                    ax.set_xticks([])  # Remove x-axis ticks
+                    ax.set_yticks(range(max_count + 1))  # Show y-axis as counts
+                    ax.set_ylabel("Count")
+                    ax.set_xlabel("Categories")
+                    ax.spines['top'].set_visible(False)  # Hide top spine
+                    ax.spines['right'].set_visible(False)  # Hide right spine
+                    ax.spines['left'].set_position(('outward', 10))  # Offset y-axis spine
+                    ax.spines['bottom'].set_position(('outward', 10))  # Offset x-axis spine
             
             elif graph_type == "Histogram":
                 data_values = hist_input.get("1.0", tk.END).strip().split(',')
                 data_values = [float(val) for val in data_values if val]  # Convert input to float
                 ax.hist(data_values, bins=10, color="green")  # Default 10 bins
+                ax.set_xticks([])  # Remove x-axis ticks
             
             elif graph_type == "Area Graph":
                 area_values = area_input.get("1.0", tk.END).strip().split(',')

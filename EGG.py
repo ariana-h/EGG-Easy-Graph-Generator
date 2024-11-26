@@ -299,8 +299,8 @@ def main():
         ax.grid(True, which='both', color='gray', linestyle='--', linewidth=0.5)
         ax.minorticks_on()
         ax.grid(which='minor', color='lightgray', linestyle=':', linewidth=0.5)
-        ax.axhline(0, color='black', linewidth=1.5)
-        ax.axvline(0, color='black', linewidth=1.5)
+        ax.axhline(0, color='black', linewidth=1.0)
+        ax.axvline(0, color='black', linewidth=1.0)
 
         try:
             if graph_type == "Line Plot":
@@ -404,16 +404,65 @@ def main():
                     ax.spines['bottom'].set_position(('outward', 10))  # Offset x-axis spine
             
             elif graph_type == "Histogram":
+                # Get the input data from the text box and strip extra spaces and newlines
                 data_values = hist_input.get("1.0", tk.END).strip().split(',')
-                data_values = [float(val) for val in data_values if val]  # Convert input to float
-                ax.hist(data_values, bins=10, color="green")  # Default 10 bins
-                ax.set_xticks([])  # Remove x-axis ticks
+    
+                # Convert the data into a list of floats. If the input is empty or invalid, it is ignored.
+                try:
+                    data_values = [float(val) for val in data_values if val]  # Convert input to float
+                except ValueError:
+                    # Show an error message if the data includes non-numeric values
+                    messagebox.showerror("Error", "Invalid input. Please enter numbers separated by commas.")
+                    return
+
+                # Create the histogram with the provided data
+                # Use default 10 bins and specify the color as green
+                ax.hist(data_values, bins=10, color="green")
+
+                # Optional: Add axis labels and a title for better understanding
+                ax.set_xlabel("Values")  # Label for the x-axis
+                ax.set_ylabel("Frequency")  # Label for the y-axis
+                ax.set_title("Histogram")  # Title for the plot
+
+                # Optional: Customize the x-axis ticks to show the range of values
+                ax.set_xticks(range(int(min(data_values)), int(max(data_values)) + 1, 1))  # Adjust tick spacing
+
+                # Optional: Show grid for better readability
+                ax.grid(True)
+
             
             elif graph_type == "Area Graph":
+                # Get the input data from the text box, strip extra spaces and newlines, and split by commas
                 area_values = area_input.get("1.0", tk.END).strip().split(',')
-                area_values = [float(val) for val in area_values if val]  # Convert input to float
+
+                # Try to convert the data into a list of floats. Handle invalid input with a try-except block.
+                try:
+                    area_values = [float(val) for val in area_values if val]  # Convert input to float
+                except ValueError:
+                # Show an error message if there are non-numeric values
+                    messagebox.showerror("Error", "Invalid input. Please enter numbers separated by commas.")
+                    return
+
+                # Generate x values based on the length of the area values
                 x_vals = np.linspace(0, len(area_values) - 1, len(area_values))
-                ax.fill_between(x_vals, area_values, color="green", alpha=0.5)
+
+                # Create the area graph by filling the area under the curve with a semi-transparent color
+                ax.fill_between(x_vals, area_values, color="green", alpha=0.5)  # Alpha for transparency
+
+                # Optional: Set axis labels and a title to improve clarity
+                ax.set_xlabel("Index")  # Label for the x-axis (index of the data points)
+                ax.set_ylabel("Values")  # Label for the y-axis (data values)
+                ax.set_title("Area Graph")  # Title for the plot
+
+                # Optional: Show grid for better readability
+                ax.grid(True)
+
+                # Optional: Customize x-axis ticks if needed (for example, every 1 unit)
+                ax.set_xticks(np.arange(0, len(area_values), step=1))  # Adjust step as needed
+
+                # Optional: Customize y-axis ticks or limits to fit the range of the data
+                ax.set_ylim(min(area_values) - 1, max(area_values) + 1)  # Adjust y-limits to give some space around data
+
             
             elif graph_type == "Scatter Plot":
                 scatter_data = scatter_input.get("1.0", tk.END).strip().splitlines()

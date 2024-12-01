@@ -416,13 +416,12 @@ def main():
                         ax.text(x, y, emoji, fontsize=16, ha='center', va='center')  # Plot each emoji
 
                     # Add a label for the category below the emojis
-                    ax.text(x,-0.15, category.capitalize(), fontsize=10, ha='center', va='center')  # Label below emojis
+                    ax.text(x,-0.2, category.capitalize(), fontsize=10, ha='center', va='center')  # Label below emojis
 
                     # Format the graph
                     ax.set_xticks([])  # Remove x-axis ticks
                     ax.set_yticks(range(max_count + 1))  # Show y-axis as counts
                     ax.set_ylabel("Count")
-                    ax.set_xlabel("Categories")
 
                     # Remove top and right spines for cleaner look
                     ax.spines['top'].set_visible(False)  

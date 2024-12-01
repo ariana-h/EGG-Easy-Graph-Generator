@@ -434,7 +434,7 @@ def main():
             elif graph_type == "Histogram":
                 # Get the input data from the text box and strip extra spaces and newlines
                 data_values = hist_input.get("1.0", tk.END).strip().split(',')
-    
+            
                 # Convert the data into a list of floats. If the input is empty or invalid, it is ignored.
                 try:
                     data_values = [float(val) for val in data_values if val]  # Convert input to float
@@ -442,21 +442,30 @@ def main():
                     # Show an error message if the data includes non-numeric values
                     messagebox.showerror("Error", "Invalid input. Please enter numbers separated by commas.")
                     return
-
-                # Create the histogram with the provided data
-                # Use default 10 bins and specify the color as green
-                ax.hist(data_values, bins=10, color="green")
-
-                # Optional: Add axis labels and a title for better understanding
+            
+                # Create bins that align with unique data values if the dataset is small and discrete
+                if len(set(data_values)) <= 10:  # Handle small, discrete datasets
+                    bins = sorted(set(data_values)) + [max(data_values) + 1]  # Ensure edges cover all values
+                else:
+                    bins = 10  # Use default number of bins for larger datasets
+            
+                # Create the histogram
+                ax.hist(data_values, bins=bins, color="green", edgecolor="black", align='left')
+            
+                # Add axis labels and a title for better understanding
                 ax.set_xlabel("Values")  # Label for the x-axis
                 ax.set_ylabel("Frequency")  # Label for the y-axis
                 ax.set_title("Histogram")  # Title for the plot
-
-                # Optional: Customize the x-axis ticks to show the range of values
-                ax.set_xticks(range(int(min(data_values)), int(max(data_values)) + 1, 1))  # Adjust tick spacing
-
-                # Optional: Show grid for better readability
+            
+                # Customize the x-axis ticks to align with the data
+                if len(set(data_values)) <= 10:
+                    ax.set_xticks(sorted(set(data_values)))  # Use unique values as ticks for small datasets
+                else:
+                    ax.set_xticks(range(int(min(data_values)), int(max(data_values)) + 1, 1))  # Default ticks for larger datasets
+            
+                # Show grid for better readability
                 ax.grid(True)
+
 
             
             elif graph_type == "Area Graph":

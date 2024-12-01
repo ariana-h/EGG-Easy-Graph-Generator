@@ -40,40 +40,28 @@ Once a user picks the type of graph they desire an input box will appear below t
 Depending on which graph was chosen inputs will vary.
 Here are examples of inputs for each graphs:
 Examples for Line Plot Graph:
-Operation​                           Input​
 
-Multiplication​                     2x, 2*x​
+![Screenshot 2024-11-30 230151](https://github.com/user-attachments/assets/6e842901-6e98-4886-b081-ba67901c9b0e)
 
-Division/Fractions​                1/x, 1/2x​
-
-Addition/Subtraction​               1+x, x-1​
-
-Exponents​                       x**2, x^2, 2^x​
-
-Trigonometry​                sin(x), cos(x), tan(x)​
-
-π​                                    2pi​
-
-Limitations                sqrt sill not available
+Limitations for Line Plot graph are that square root or sqrt is sill not available.
 
 Examples of inputs for the other types of graph:
 
-Graph​                                                                       Input​
+![Screenshot 2024-11-30 230216](https://github.com/user-attachments/assets/0e519da7-2da2-477d-b88f-b4c11f694cec)
 
-Bar Graph​                  Category,  Value (A, 5)​ (If user inputs A, 5 then a bar graph will appear and will graph the desired values)
+Expectations:
 
-Pie Chart​                  Category, Value (A, 5)​ (If user inputs A, 75 B, 25 then a pie chart will appear and will show A as 75% of the circle and B as 25% of the circle)
-                           (If user enters numbers that dont add up to 100 percent it will determine the percentage of each category for you so if user just inputs A, 5 it will show A as 100%)
+Bar Graph - If user inputs A, 5 then a bar graph will appear and will graph the desired values)
 
-Pictograph​                Emoji Name, Count (Cat, 5)​ (If user inputs cat, 4 dog, 6 it will display 4 cat emojis and 6 dog emojis on graph)
-                          (Limitations: Can only graph a certain kinds of emojis for a list of emojis that will appear on graph look at Emojis for Pictograph.txt file)
-                          (When user inputs a emoji not listed in the list a question mark will appear on graph as a placeholder, so unknown, 1 will graph 1 "?" on the graph)
+Pie Chart - If user inputs A, 75 B, 25 then a pie chart will appear and will show A as 75% of the circle and B as 25% of the circle. If user enters numbers that dont add up to 100 percent it will determine the percentage of each category for you so if user just inputs A, 5 it will show A as 100%
 
-Histogram​                 Comma-Separated Values (1, 2, 3,…)​ (If user inputs 1,1,3,4,2 it will graph almost like a bar graph and show the frequency of the values listed.)
+Pictograph​ - ​If user inputs cat, 4 dog, 6 it will display 4 cat emojis and 6 dog emojis on graph. Limitations: Can only graph a certain kinds of emojis for a list of emojis that will appear on graph look at Emojis for Pictograph.txt file. When user inputs a emoji not listed in the list a question mark will appear on graph as a placeholder, so unknown, 1 will graph 1 "?" on the graph
 
-Area Graph​                Comma-Separated Values (1, 2, 3,…)​ (If user inputs 1,2,3 it will show the area of those three values.)
+Histogram - If user inputs 1,1,3,4,2 it will graph almost like a bar graph and show the frequency of the values listed.
 
-Scatter Plot​              X and Y coordinate values on separate lines (e.g., x, y)**​ (If user inputs 3,1 (on next line) 4,1 it will graph a point at 3,1 and a point at 4,1 and will connect the two points)
+Area Graph​ - If user inputs 1,2,3 it will show the area of those three values.
+
+Scatter Plot​ - If user inputs 3,1 (on next line) 4,1 it will graph a point at 3,1 and a point at 4,1 and will connect the two points
 
 Those were examples of inputs and a small description of what the user should except for each graph.
 

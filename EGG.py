@@ -1,4 +1,7 @@
 import tkinter as tk
+import os
+import sys
+import csv
 from tkinter import ttk, filedialog, messagebox
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
@@ -8,7 +11,9 @@ import sympy as sp
 from sympy import sympify, symbols, pi
 from matplotlib import rcParams
 from PIL import Image, ImageTk
-import csv
+#from sympy import sympify, symbols, pi, sqrt
+
+
 
 # Global variable for the symbol used in equations
 x = symbols('x')  # Define 'x' as a symbol for sympy to recognize it in equations
@@ -16,6 +21,18 @@ x = symbols('x')  # Define 'x' as a symbol for sympy to recognize it in equation
 # Set font family globally for emojis
 rcParams['font.family'] = 'Segoe UI Emoji' # Windows-compatible
 # For MacOS or Linux, replace 'Segoe UI Emoji' with 'Apple Color Emoji' or similar
+
+## Used to make executable
+def get_resource_path(relative_path):
+    """Get the path to the resource (image) depending on whether running as a script or an executable."""
+    if getattr(sys, 'frozen', False):  # Check if running as a bundled executable
+        # Running in a bundled app
+        base_path = sys._MEIPASS
+    else:
+        # Running as a script
+        base_path = os.path.abspath(".")
+    
+    return os.path.join(base_path, relative_path)
 
 #####################################################################
 # Function to safely parse and evaluate equations using sympy
@@ -27,6 +44,9 @@ def parse_equation(equation_str):
         equation_str = equation_str.replace('^', '**').replace(' ', '')  
         
         equation_str = equation_str.replace('pi', str(pi))
+        
+        # Ensure that 'sqrt' is correctly interpreted as the SymPy sqrt function (not working properly still)
+        #equation_str = equation_str.replace('sqrt', 'sqrt(') + ')' * equation_str.count('sqrt')
         
         processed_str = ''
         for i, char in enumerate(equation_str):
@@ -198,7 +218,8 @@ def main():
     root.columnconfigure(0, weight=1)
     
     # Logo on title bar
-    original_logo = Image.open('EGG.png')
+    image_path = get_resource_path("EGG.png")
+    original_logo = Image.open(image_path)
     icon_image = ImageTk.PhotoImage(original_logo.resize((32, 32)))  # Resize for title bar
     root.iconphoto(True, icon_image)  # Set title bar icon
 
@@ -222,7 +243,8 @@ def main():
     # Load and resize the logo
     #####################################################################
     
-    original_logo = Image.open('EGG.png')
+    image_path = get_resource_path("EGG.png")
+    original_logo = Image.open(image_path)
     logo_image = ImageTk.PhotoImage(original_logo.resize((100, 100)))
     logo_label = tk.Label(control_frame, image=logo_image, bg="#d0f0c0")
     logo_label.pack(pady=5)
@@ -370,6 +392,9 @@ def main():
                     "t-rex": "🦖", "sauropod": "🦕", "smile": "😊", "grin": "😁", "wink": "😉", "laugh": "😆", "heart": "❤️",
                     "heart_eyes": "😍", "kiss": "😘", "star": "⭐", "sparkles": "✨", "fire": "🔥", "thumbs_up": "👍", "clap": "👏",
                     "party": "🎉", "confetti": "🎊", "balloon": "🎈", "flower": "🌸", "tree": "🌳", "sun": "☀️", "moon": "🌙",
+                    "apple": "🍎", "banana": "🍌", "cherry": "🍒", "grapes": "🍇", "lemon": "🍋", "melon": "🍈", "orange": "🍊",
+                    "pear": "🍐", "pineapple": "🍍", "strawberry": "🍓", "watermelon": "🍉", "peach": "🍑", "kiwi": "🥝",
+                    "coconut": "🥥", "avocado": "🥑",
                     # Add more mappings as needed
                     } 
 
@@ -391,17 +416,21 @@ def main():
                         ax.text(x, y, emoji, fontsize=16, ha='center', va='center')  # Plot each emoji
 
                     # Add a label for the category below the emojis
-                    ax.text(x,-0.6, category.capitalize(), fontsize=12, ha='center', va='center')  # Label below emojis
+                    ax.text(x,-0.15, category.capitalize(), fontsize=10, ha='center', va='center')  # Label below emojis
 
                     # Format the graph
                     ax.set_xticks([])  # Remove x-axis ticks
                     ax.set_yticks(range(max_count + 1))  # Show y-axis as counts
                     ax.set_ylabel("Count")
                     ax.set_xlabel("Categories")
-                    ax.spines['top'].set_visible(False)  # Hide top spine
-                    ax.spines['right'].set_visible(False)  # Hide right spine
-                    ax.spines['left'].set_position(('outward', 10))  # Offset y-axis spine
-                    ax.spines['bottom'].set_position(('outward', 10))  # Offset x-axis spine
+
+                    # Remove top and right spines for cleaner look
+                    ax.spines['top'].set_visible(False)  
+                    ax.spines['right'].set_visible(False)
+
+                    # Offset y-axis and x-axis spines for better visual separation
+                    ax.spines['left'].set_position(('outward', 8))  
+                    ax.spines['bottom'].set_position(('outward', 1))
             
             elif graph_type == "Histogram":
                 # Get the input data from the text box and strip extra spaces and newlines

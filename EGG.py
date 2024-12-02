@@ -8,12 +8,9 @@ from matplotlib.figure import Figure
 import numpy as np
 import pandas as pd
 import sympy as sp
-from sympy import sympify, symbols, pi
+from sympy import sympify, symbols, pi 
 from matplotlib import rcParams
 from PIL import Image, ImageTk
-#from sympy import sympify, symbols, pi, sqrt
-
-
 
 # Global variable for the symbol used in equations
 x = symbols('x')  # Define 'x' as a symbol for sympy to recognize it in equations
@@ -25,7 +22,7 @@ rcParams['font.family'] = 'Segoe UI Emoji' # Windows-compatible
 ## Used to make executable
 def get_resource_path(relative_path):
     """Get the path to the resource (image) depending on whether running as a script or an executable."""
-    if getattr(sys, 'frozen', False):  # Check if running as a bundled executable
+    if getattr(sys, 'frozen', False): 
         # Running in a bundled app
         base_path = sys._MEIPASS
     else:
@@ -40,7 +37,6 @@ def get_resource_path(relative_path):
 
 def parse_equation(equation_str):
     try:
-        # Replace '^' with '**' for exponentiation, and handle whitespace
         equation_str = equation_str.replace('^', '**').replace(' ', '')  
         
         equation_str = equation_str.replace('pi', str(pi))
@@ -51,27 +47,17 @@ def parse_equation(equation_str):
         processed_str = ''
         for i, char in enumerate(equation_str):
             if i > 0 and char.isalpha() and equation_str[i-1].isdigit():
-                processed_str += '*' + char  # Insert '*' for implicit multiplication
+                processed_str += '*' + char  
             elif i > 0 and char.isdigit() and equation_str[i-1].isalpha():
-                processed_str += '*' + char  # Insert '*' for implicit multiplication
+                processed_str += '*' + char 
             else:
                 processed_str += char
 
         expression = sympify(processed_str)
-        return lambda val: float(expression.subs(x, val))  # Return lambda for evaluation
+        return lambda val: float(expression.subs(x, val))
     except Exception as e:
         messagebox.showerror("Error", f"Invalid equation format: {e}")
     return None
-
-# placeholder for plot_data
-
-# placeholder for clear_graph
-
-# placeholder for save_graph
-
-# placeholder to import from file ()
-
-# placeholder for import_file
 
 # Function to customize the graph
 # def customize_graph():
@@ -89,12 +75,12 @@ def parse_equation(equation_str):
 #####################################################################
 
 def resize_logo(event):
-    new_width = event.width // 8  # Adjust size based on window width
-    new_height = event.height // 8  # Adjust size based on window height
+    new_width = event.width // 8 
+    new_height = event.height // 8 
     resized_logo = original_logo.resize((new_width, new_height), Image.ANTIALIAS)
     logo_image = ImageTk.PhotoImage(resized_logo)
     logo_label.config(image=logo_image)
-    logo_label.image = logo_image  # Keep a reference to prevent garbage collection
+    logo_label.image = logo_image 
 
 #####################################################################
 # Function to show/hide input fields based on selected graph type
@@ -162,34 +148,34 @@ def update_input_fields(event):
 #####################################################################
 
 # Inital placeholder
-def initial(input, placeholder):#
-    if isinstance(input, tk.Entry):  # Single-line input (Entry widget)
+def initial(input, placeholder):
+    if isinstance(input, tk.Entry): 
         if input.get() == "":
             input.insert(0, placeholder)  
             input.config(fg="grey")  
-    else:  # Multi-line input (Text widget)
+    else:  
         if input.get("1.0", "end-1c") == "":
             input.insert("1.0", placeholder) 
             input.config(fg="grey")
 
 # Function to clear the placeholder when the user clicks the entry box
 def on_entry_click(input, placeholder):
-    if isinstance(input, tk.Entry):  # Single-line input (Entry widget)
+    if isinstance(input, tk.Entry):
         if input.get() == placeholder:
             input.delete(0, tk.END)  
             input.config(fg="black")  
-    else:  # Multi-line input (Text widget)
+    else:  
         if input.get("1.0", "end-1c") == placeholder:
             input.delete("1.0", tk.END)  
             input.config(fg="black")  
 
 # Function to add the placeholder back if the entry box is left empty
 def on_focusout(input, placeholder):
-    if isinstance(input, tk.Entry):  # Single-line input (Entry widget)
+    if isinstance(input, tk.Entry): 
         if input.get() == "":
             input.insert(0, placeholder) 
             input.config(fg="grey")  
-    else:  # Multi-line input (Text widget)
+    else:
         if input.get("1.0", "end-1c") == "":
             input.insert("1.0", placeholder) 
             input.config(fg="grey") 
@@ -200,7 +186,6 @@ def on_focusout(input, placeholder):
     
 def main():
     global graph_type_combo, ax, canvas, original_logo, logo_label
-    # global title_input, x_label_input, y_label_input, 
     global imported_data, fig
     global bar_input, pie_input, pictograph_input, hist_input, area_input, scatter_input, equation_input
 
@@ -220,8 +205,8 @@ def main():
     # Logo on title bar
     image_path = get_resource_path("EGG.png")
     original_logo = Image.open(image_path)
-    icon_image = ImageTk.PhotoImage(original_logo.resize((32, 32)))  # Resize for title bar
-    root.iconphoto(True, icon_image)  # Set title bar icon
+    icon_image = ImageTk.PhotoImage(original_logo.resize((32, 32)))
+    root.iconphoto(True, icon_image)
 
     # Create a frame for the controls on the left
     control_frame = tk.Frame(root, bg="#d0f0c0")
@@ -364,20 +349,16 @@ def main():
                 ax.pie(values, labels=labels, autopct='%1.1f%%')
             
             elif graph_type == "Pictograph":
-                # Get input data from the text box
                 data_pairs = pictograph_input.get("1.0", tk.END).strip().splitlines()
 
-                # Initialize variables for storing parsed data
                 data = []
 
                 try:
-                    # Parse the input into categories and counts
                     for pair in data_pairs:
                         category, count = pair.split(',')
                         count = int(count.strip())
-                        data.append((category.strip(), count))  # Store as tuples
+                        data.append((category.strip(), count)) 
                 except ValueError:
-                # Handle parsing errors
                     messagebox.showerror("Error", "Invalid format for Pictograph. Use 'Category, Count' format.")
                     return
                 # This is the emoji map more emojis can easily be added to this list
@@ -398,58 +379,46 @@ def main():
                     # Add more mappings as needed
                     } 
 
-                # Plot emojis on the graph
-                x_positions = []  # X positions for categories
-                max_count = max(count for _, count in data)  # Find the maximum count to scale the graph
+                x_positions = []  
+                max_count = max(count for _, count in data)  
 
-                # Set up graph limits
-                ax.set_xlim(0, len(data))  # One x-unit per category
-                ax.set_ylim(0, max_count + 1)  # Allow some extra space on the y-axis
+                ax.set_xlim(0, len(data))
+                ax.set_ylim(0, max_count + 1)  
 
-                # Iterate through data to plot emojis
                 for i, (category, count) in enumerate(data):
                     emoji = emoji_mapping.get(category.lower(), "❓")  # Default to "❓" if no emoji mapping
-                    x = i + 0.5  # Center emoji stack at category position
+                    x = i + 0.5 
                 
                     for j in range(count):
-                        y = j + 0.5  # Position emojis vertically stacked
-                        ax.text(x, y, emoji, fontsize=16, ha='center', va='center')  # Plot each emoji
+                        y = j + 0.5 
+                        ax.text(x, y, emoji, fontsize=16, ha='center', va='center')  
 
-                    # Add a label for the category below the emojis
-                    ax.text(x,-0.2, category.capitalize(), fontsize=10, ha='center', va='center')  # Label below emojis
+                    ax.text(x,-0.2, category.capitalize(), fontsize=10, ha='center', va='center')  
 
-                    # Format the graph
-                    ax.set_xticks([])  # Remove x-axis ticks
-                    ax.set_yticks(range(max_count + 1))  # Show y-axis as counts
+                    ax.set_xticks([])  
+                    ax.set_yticks(range(max_count + 1)) 
                     ax.set_ylabel("Count")
 
-                    # Remove top and right spines for cleaner look
                     ax.spines['top'].set_visible(False)  
                     ax.spines['right'].set_visible(False)
 
-                    # Offset y-axis and x-axis spines for better visual separation
                     ax.spines['left'].set_position(('outward', 8))  
                     ax.spines['bottom'].set_position(('outward', 1))
             
             elif graph_type == "Histogram":
-                # Get the input data from the text box and strip extra spaces and newlines
                 data_values = hist_input.get("1.0", tk.END).strip().split(',')
             
-                # Convert the data into a list of floats. If the input is empty or invalid, it is ignored.
                 try:
-                    data_values = [float(val) for val in data_values if val]  # Convert input to float
+                    data_values = [float(val) for val in data_values if val]  
                 except ValueError:
-                    # Show an error message if the data includes non-numeric values
                     messagebox.showerror("Error", "Invalid input. Please enter numbers separated by commas.")
                     return
             
-                # Create bins that align with unique data values if the dataset is small and discrete
-                if len(set(data_values)) <= 10:  # Handle small, discrete datasets
-                    bins = sorted(set(data_values)) + [max(data_values) + 1]  # Ensure edges cover all values
+                if len(set(data_values)) <= 10: 
+                    bins = sorted(set(data_values)) + [max(data_values) + 1] 
                 else:
                     bins = 10  # Use default number of bins for larger datasets
             
-                # Create the histogram
                 ax.hist(data_values, bins=bins, color="green", edgecolor="black", align='left')
             
                 # Add axis labels and a title for better understanding
@@ -457,54 +426,42 @@ def main():
                 ax.set_ylabel("Frequency")  # Label for the y-axis
                 ax.set_title("Histogram")  # Title for the plot
             
-                # Customize the x-axis ticks to align with the data
                 if len(set(data_values)) <= 10:
-                    ax.set_xticks(sorted(set(data_values)))  # Use unique values as ticks for small datasets
+                    ax.set_xticks(sorted(set(data_values))) 
                 else:
-                    ax.set_xticks(range(int(min(data_values)), int(max(data_values)) + 1, 1))  # Default ticks for larger datasets
+                    ax.set_xticks(range(int(min(data_values)), int(max(data_values)) + 1, 1)) 
             
-                # Show grid for better readability
                 ax.grid(True)
 
 
             
             elif graph_type == "Area Graph":
-                # Get the input data from the text box, strip extra spaces and newlines, and split by commas
                 area_values = area_input.get("1.0", tk.END).strip().split(',')
 
-                # Try to convert the data into a list of floats. Handle invalid input with a try-except block.
                 try:
-                    area_values = [float(val) for val in area_values if val]  # Convert input to float
+                    area_values = [float(val) for val in area_values if val] 
                 except ValueError:
-                # Show an error message if there are non-numeric values
                     messagebox.showerror("Error", "Invalid input. Please enter numbers separated by commas.")
                     return
 
-                # Generate x values based on the length of the area values
                 x_vals = np.linspace(0, len(area_values) - 1, len(area_values))
 
-                # Create the area graph by filling the area under the curve with a semi-transparent color
-                ax.fill_between(x_vals, area_values, color="green", alpha=0.5)  # Alpha for transparency
+                ax.fill_between(x_vals, area_values, color="green", alpha=0.5) 
 
-                # Optional: Set axis labels and a title to improve clarity
                 ax.set_xlabel("Index")  # Label for the x-axis (index of the data points)
                 ax.set_ylabel("Values")  # Label for the y-axis (data values)
                 ax.set_title("Area Graph")  # Title for the plot
 
-                # Optional: Show grid for better readability
                 ax.grid(True)
 
-                # Optional: Customize x-axis ticks if needed (for example, every 1 unit)
                 ax.set_xticks(np.arange(0, len(area_values), step=1))  # Adjust step as needed
 
-                # Optional: Customize y-axis ticks or limits to fit the range of the data
                 ax.set_ylim(min(area_values) - 1, max(area_values) + 1)  # Adjust y-limits to give some space around data
 
             
             elif graph_type == "Scatter Plot":
                 scatter_data = scatter_input.get("1.0", tk.END).strip().splitlines()
     
-                # Ensure there's at least one coordinate pair
                 if len(scatter_data) < 1:
                     messagebox.showerror("Error", "Scatter Plot requires at least one coordinate pair (e.g., 'x,y').")
                     return
@@ -516,26 +473,25 @@ def main():
                     # Iterate through each line in the input (each line should be a coordinate pair)
                     for pair in scatter_data:
                         # Split each line into x and y values (e.g., "2,3" -> x=2, y=3)
-                        x, y = map(float, pair.split(','))  # Split each line into x and y values
-                        # Append the x and y values to the respective lists
+                        x, y = map(float, pair.split(','))
                         x_values.append(x)
                         y_values.append(y)
                 except ValueError:
                     messagebox.showerror("Error", "Invalid format for Scatter Plot. Use 'x,y' format on each line.")
                     return
 
-                # Plot the scatter plot
                 ax.scatter(x_values, y_values, color="green")
 
-            # Update the canvas to reflect the changes
             canvas.draw()
             save_button.pack()
 
         except Exception as e:
             messagebox.showerror("Error", f"An error occurred while generating the graph: {e}")
         
-
+    #####################################################################
     # Function to clear the graph
+    #####################################################################
+    
     def clear_graph():
         ax.clear()
         
@@ -560,57 +516,56 @@ def main():
         hist_input.delete("1.0", tk.END)
         area_input.delete("1.0", tk.END)
 
+    #####################################################################
+    # Function to import data
+    #####################################################################
+
     def import_data(): 
         file_path = filedialog.askopenfilename(filetypes=[("CSV Files", "*.csv"), ("Excel Files", "*.xlsx")])
         if file_path:
             try:
                 global imported_data
 
-                # Variables for x and y values from file
                 x_data = []
                 y_data = []
 
-                # Check file type and parse
                 if file_path.endswith('.csv'):
                     with open(file_path, newline='') as csvfile:
                         reader = csv.reader(csvfile, quotechar='"')
                         for row in reader:
-                            # Check if the row contains an equation
                             if len(row) == 1 and row[0].startswith("(") and row[0].endswith(")"):
-                                equation = sympify(row[0].strip("()"))  # Parse equation
-                                x_data = list(range(0, 11))  # Default x range
-                                y_data = [float(equation.subs(x, val)) for val in x_data]  # Evaluate y
+                                equation = sympify(row[0].strip("()")) 
+                                x_data = list(range(0, 11))  
+                                y_data = [float(equation.subs(x, val)) for val in x_data] 
                                 plot_data(x_data, y_data)
                                 return
                             elif len(row) == 1 and ',' in row[0]:  # Check for "x,y" format
                                 x_val, y_val = map(float, row[0].split(","))
                                 x_data.append(x_val)
                                 y_data.append(y_val)
-                            elif len(row) == 2:  # Two-column CSV
+                            elif len(row) == 2:
                                 x_data.append(float(row[0]))
                                 y_data.append(float(row[1]))
                             else:
                                 messagebox.showerror("Error", "Data is not in expected 'x,y' or equation format.")
                                 return
 
-                    # If data points are detected, plot them
                     if x_data and y_data:
                         plot_data(x_data, y_data)
 
                 elif file_path.endswith('.xlsx'):
-                    # Use pandas to handle Excel files
                     data = pd.read_excel(file_path, header=None, engine='openpyxl')
-                    if len(data.columns) == 1:  # Single-column file (possible equations)
+                    if len(data.columns) == 1:  
                         equations = data.iloc[:, 0].tolist()
                         for eq in equations:
                             if isinstance(eq, str) and eq.startswith("(") and eq.endswith(")"):
                                 equation = sympify(eq.strip("()"))
-                                x_data = list(range(0, 11))  # Default x range
+                                x_data = list(range(0, 11)) 
                                 y_data = [float(equation.subs(x, val)) for val in x_data]
                                 plot_data(x_data, y_data)
                                 return
                         messagebox.showerror("Error", "No valid equations detected in the file.")
-                    elif len(data.columns) == 2:  # Two-column file (x and y values)
+                    elif len(data.columns) == 2:
                         x_data = data.iloc[:, 0].astype(float).tolist()
                         y_data = data.iloc[:, 1].astype(float).tolist()
                         plot_data(x_data, y_data)
@@ -633,7 +588,6 @@ def main():
         # Clear canvas
         ax.clear()
         save_button.pack_forget()
-        # Plot the data if it contains any points
         if x_data and y_data:
             ax.plot(x_data, y_data, marker='o', linestyle='-', color="green")
             
@@ -643,17 +597,12 @@ def main():
             
             # Set background color of the graph to a faded green
             ax.set_facecolor('#e0f7da')
-            # Add a grid with major and minor lines to resemble graph paper
             ax.grid(True, which='both', color='gray', linestyle='--', linewidth=0.5)
-            # Set minor ticks
             ax.minorticks_on()
-            # Customize minor grid lines (finer)
             ax.grid(which='minor', color='lightgray', linestyle=':', linewidth=0.5)
-            # Draw darker x and y axis lines
-            ax.axhline(0, color='black', linewidth=1.5)  # Darker x-axis
-            ax.axvline(0, color='black', linewidth=1.5)  # Darker y-axis
+            ax.axhline(0, color='black', linewidth=1.5) 
+            ax.axvline(0, color='black', linewidth=1.5)  
 
-            # Draw canvas
             canvas.draw()
             save_button.pack()
 
@@ -686,15 +635,12 @@ def main():
     clear_button = tk.Button(control_frame, text="Clear Graph", command=clear_graph, bg="#006400", fg="white")
     clear_button.pack(pady=5, fill=tk.X)
 
-    # Initialize data
     imported_data = None
 
-    # Create a canvas for the graph
     canvas = FigureCanvasTkAgg(fig, master=root)
     canvas_widget = canvas.get_tk_widget()
     canvas_widget.grid(row=0, column=1, sticky="nsew")
 
-    # Start the Tkinter event loop
     root.mainloop()
 
 if __name__ == "__main__":

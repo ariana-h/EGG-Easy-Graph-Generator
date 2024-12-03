@@ -12,16 +12,17 @@ from sympy import sympify, symbols, pi
 from matplotlib import rcParams
 from PIL import Image, ImageTk
 
-# Global variable for the symbol used in equations
+# Global variable for the symbol used in equations (Taylor contributed this)
 x = symbols('x')  # Define 'x' as a symbol for sympy to recognize it in equations
 
-# Set font family globally for emojis
+# Set font family globally for emojis (Taylor contributed this)
 rcParams['font.family'] = 'Segoe UI Emoji' # Windows-compatible
 # For MacOS or Linux, replace 'Segoe UI Emoji' with 'Apple Color Emoji' or similar
 
-## Used to make executable
+## Used to make executable https://stackoverflow.com/questions/7674790/bundling-data-files-with-pyinstaller-onefile
+## Added by Taylor, used similar code to the link above this comment
 def get_resource_path(relative_path):
-    """Get the path to the resource (image) depending on whether running as a script or an executable."""
+    # This gets the path to the resource (image) depending on whether running as a script or an executable.
     if getattr(sys, 'frozen', False): 
         # Running in a bundled app
         base_path = sys._MEIPASS

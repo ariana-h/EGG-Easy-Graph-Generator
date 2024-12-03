@@ -34,6 +34,8 @@ def get_resource_path(relative_path):
 
 #####################################################################
 # Function to safely parse and evaluate equations using sympy
+# Created by Taylor
+# Tested by all group members
 #####################################################################
 
 def parse_equation(equation_str):
@@ -73,6 +75,8 @@ def parse_equation(equation_str):
     
 #####################################################################
 # Function to resize logo based on window size
+# Created by Ariana
+# Tested by all group members
 #####################################################################
 
 def resize_logo(event):
@@ -85,6 +89,8 @@ def resize_logo(event):
 
 #####################################################################
 # Function to show/hide input fields based on selected graph type
+# Created by Ariana and Taylor
+# Tested by all group members
 #####################################################################
 
 def update_input_fields(event):
@@ -146,6 +152,8 @@ def update_input_fields(event):
     
 #####################################################################
 # Function for placeholder text
+# Created by Ariana
+# Tested by all group members
 #####################################################################
 
 # Inital placeholder
@@ -183,6 +191,7 @@ def on_focusout(input, placeholder):
      
 #####################################################################
 # Main function encapsulating all the GUI code
+# Created by all group members
 #####################################################################
     
 def main():
@@ -293,6 +302,8 @@ def main():
     
     #####################################################################
     # Function to update the graph based on user input and selected graph type
+    # Created by Ariana and Taylor
+    # Tested by all group members
     #####################################################################
 
     def plot_graph():
@@ -491,6 +502,8 @@ def main():
         
     #####################################################################
     # Function to clear the graph
+    # Created by Taylor
+    # Tested by all group members
     #####################################################################
     
     def clear_graph():
@@ -519,6 +532,8 @@ def main():
 
     #####################################################################
     # Function to import data
+    # Created by Katelyn
+    # Tested by all group members
     #####################################################################
 
     def import_data(): 
@@ -583,6 +598,8 @@ def main():
 
     #####################################################################
     # Function to plot data from file
+    # Created by Katelyn
+    # Tested by all group members
     #####################################################################
 
     def plot_data(x_data, y_data):
@@ -612,6 +629,8 @@ def main():
 
     #####################################################################
     # Function to save the graph with user defined name
+    # Created by Katelyn
+    # Tested by all group members
     #####################################################################
     def save_graph():
             file_path = filedialog.asksaveasfilename(defaultextension=".png", filetypes=[("PNG files", "*.png"), ("All files", "*.*")])

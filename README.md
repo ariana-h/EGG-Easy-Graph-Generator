@@ -18,6 +18,12 @@ It will take a second to load but once loaded the application will appear on you
 Some devices won't let you run the application even when trying to ignore the protection on your device,
 so if that is true highly recommend using VS Code and cloning this repository and then running the python program
 in VS Code and then follow the how to use the Easy Graph Generator discussed below.
+## Can't Clone Repo
+If you are unable to clone the repo then download the repo as a zip file by pressing code drop-down button
+in our repo and press download zip (We are submitting zip file and link to our GitHub repo as well).
+Once downloaded unzip file to location you want and then run the EGG.py file to run the program, if you are 
+doing it this way you must have python on your device and have the dependencies installed. 
+Those are listed below in the code installtion part.
 
 ## Code Installation
 To run the code directly, the following dependencies may have to be installed in your environment.

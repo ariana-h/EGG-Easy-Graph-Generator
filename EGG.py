@@ -34,7 +34,7 @@ def get_resource_path(relative_path):
 
 #####################################################################
 # Function to safely parse and evaluate equations using sympy
-# Created by Taylor
+# Created by Taylor and Ariana
 # Tested by all group members
 #####################################################################
 
@@ -77,6 +77,7 @@ def parse_equation(equation_str):
 # Function to resize logo based on window size
 # Created by Ariana
 # Tested by all group members
+# Referenced https://www.tutorialspoint.com/resizing-images-with-imagetk-photoimage-with-tkinter
 #####################################################################
 
 def resize_logo(event):
@@ -154,6 +155,7 @@ def update_input_fields(event):
 # Function for placeholder text
 # Created by Ariana
 # Tested by all group members
+# Referenced https://www.geeksforgeeks.org/python-creating-a-button-in-tkinter/
 #####################################################################
 
 # Inital placeholder
@@ -201,6 +203,7 @@ def main():
 
     #####################################################################
     # Create the main window
+    # Referenced https://www.geeksforgeeks.org/create-first-gui-application-using-python-tkinter/#
     #####################################################################
     
     root = tk.Tk()
@@ -236,6 +239,7 @@ def main():
 
     #####################################################################
     # Load and resize the logo
+    # Referenced https://www.tutorialspoint.com/resizing-images-with-imagetk-photoimage-with-tkinter
     #####################################################################
     
     image_path = get_resource_path("EGG.png")
@@ -246,6 +250,7 @@ def main():
 
     #####################################################################
     # Dropdown menu for selecting graph type with prompt
+    # Referenced https://pythonassets.com/posts/drop-down-list-combobox-in-tk-tkinter/
     #####################################################################
     
     graph_type_label = tk.Label(control_frame, text="Select Graph Type", bg="#d0f0c0")
@@ -302,7 +307,7 @@ def main():
     
     #####################################################################
     # Function to update the graph based on user input and selected graph type
-    # Created by Ariana and Taylor
+    # Created by Taylor
     # Tested by all group members
     #####################################################################
 
@@ -502,7 +507,7 @@ def main():
         
     #####################################################################
     # Function to clear the graph
-    # Created by Taylor
+    # Created by Taylor and Ariana
     # Tested by all group members
     #####################################################################
     
@@ -534,6 +539,7 @@ def main():
     # Function to import data
     # Created by Katelyn
     # Tested by all group members
+    # Referenced https://www.geeksforgeeks.org/working-csv-files-python/
     #####################################################################
 
     def import_data(): 
@@ -600,6 +606,7 @@ def main():
     # Function to plot data from file
     # Created by Katelyn
     # Tested by all group members
+    # Referenced https://www.datacamp.com/tutorial/matplotlib-tutorial-python
     #####################################################################
 
     def plot_data(x_data, y_data):

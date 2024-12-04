@@ -19,6 +19,19 @@ Some devices won't let you run the application even when trying to ignore the pr
 so if that is true highly recommend using VS Code and cloning this repository and then running the python program
 in VS Code and then follow the how to use the Easy Graph Generator discussed below.
 
+## Code Installation
+To run the code directly, the following dependencies may have to be installed in your environment.
+
+On Windows, Tkinter should be installed with Python by default.  
+
+Other dependencies:  
+`pip install matplotlib`   
+`pip install numpy`   
+`pip install pandas`   
+`pip install pillow`   
+`pip install sympy`
+
+
 ## How to use EGG: Easy Graph Generator
 Once you open up or run the application the user interface will appear.
 You will see the user input side on the left hand side of the user interface and the graph on the right side of the interface.

@@ -308,6 +308,15 @@ def main():
     #####################################################################
     # Function to update the graph based on user input and selected graph type
     # Created by Taylor
+    # Didn't use exact code from these references but used these to figure out each graphs functionality.
+    # Line Plot Reference: https://www.geeksforgeeks.org/line-chart-in-matplotlib-python/
+    # Bar Graph Reference: https://www.analyticsvidhya.com/blog/2021/08/understanding-bar-plots-in-python-beginners-guide-to-data-visualization/
+    # Pie Chart Reference: https://stackoverflow.com/questions/73520660/how-to-create-a-matplotlib-pie-chart-with-input-from-a-tkinter-text-widget
+    # Pictograph Reference: https://pythonprogramming.net/how-to-embed-matplotlib-graph-tkinter-gui/
+    # Pictograph Emoji Reference: https://www.geeksforgeeks.org/python-program-to-print-emojis/
+    # Histogram Reference: https://www.geeksforgeeks.org/plotting-histogram-in-python-using-matplotlib/
+    # Area Graph Reference: https://www.analyticsvidhya.com/blog/2024/02/area-chart-in-python/#:~:text=First%2C%20we%20must%20import%20the,a%20dataframe%20with%20random%20values.&text=By%20specifying%20the%20x%2Daxis,each%20category's%20contribution%20over%20time.
+    # Scatter Plot Reference: https://stackoverflow.com/questions/68613660/scatter-plot-in-tkinter-using-matplotlib-no-plot-is-showing
     # Tested by all group members
     #####################################################################
 
